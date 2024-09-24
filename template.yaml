@@ -11,6 +11,12 @@ Globals:
     Timeout: 20
     MemorySize: 512
 
+Parameters:
+  NRLicenseKey:
+    Type: String
+    Description: Your New Relic license key; necessary for sending telemetry to New Relic.
+    AllowedPattern: '[0-9a-f]{32}FFFFNRAL'
+
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -23,14 +29,19 @@ Resources:
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
-          PARAM1: VALUE
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
+          OTEL_EXPORTER_OTLP_HEADERS: !Sub "api-key=${NRLicenseKey}"
+          OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+          OTEL_EXPORTER_OTLP_ENDPOINT: https://otlp.nr-data.net:443
+      Layers:
+        # - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:184161586896:layer:opentelemetry-javawrapper-0_8_0:1
+        - !Sub arn:${AWS::Partition}:lambda:${AWS::Region}:184161586896:layer:opentelemetry-javaagent-0_8_0:4
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /hello
             Method: get
-
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM

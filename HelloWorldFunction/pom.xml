@@ -28,6 +28,12 @@
           <version>4.13.2</version>
           <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.opentelemetry/opentelemetry-api -->
+        <dependency>
+          <groupId>io.opentelemetry</groupId>
+          <artifactId>opentelemetry-api</artifactId>
+          <version>1.42.1</version>
+        </dependency>
     </dependencies>
 
     <build>
