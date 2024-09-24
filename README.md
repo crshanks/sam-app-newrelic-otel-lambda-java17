@@ -35,12 +35,25 @@ To use the SAM CLI, you need the following tools.
 * Maven - [Install Maven](https://maven.apache.org/install.html)
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
-To build and deploy your application for the first time, run the following in your shell:
+To build and deploy your application for the first time, edit the Makefile and supply the required REGION, PROFILE, and LICENSE_Key env vars, then run the following in your shell:
+
+```bash
+make deploy
+```
+
+or, alternatively, use:
 
 ```bash
 sam build
 sam deploy --guided
 ```
+and 
+```bash
+sam sync --watch
+```
+for subsequent deploys.
+
+Note that if you use the guided deploy, ensuring that you reply `No` to the question `Allow SAM CLI IAM role creation [Y/n]:` and for the subsequent field `Capabilities [['CAPABILITY_IAM']]:` enter `CAPABILITY_NAMED_IAM`.
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
 
